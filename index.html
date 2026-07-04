@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이현빈 | 자기 PR 명함</title>
+<style>
+  :root {
+    --blue: #3182f6;
+    --ink: #191f28;
+    --gray: #8b95a1;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 15%, #ffffff 0%, #eef1f5 65%, #e4e8ee 100%);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    overflow: hidden;
+  }
+
+  .stage {
+    perspective: 1200px;
+    padding: 40px;
+  }
+
+  .card {
+    position: relative;
+    width: 380px;
+    height: 230px;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow:
+      0 25px 50px rgba(15, 23, 42, 0.14),
+      0 2px 6px rgba(15, 23, 42, 0.05);
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    will-change: transform;
+    overflow: hidden;
+    border: 1px solid #eef0f3;
+    cursor: pointer;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(49, 130, 246, 0.12) 48%, rgba(255, 255, 255, 0.6) 52%, transparent 70%);
+    background-size: 250% 250%;
+    background-position: var(--shine-x, 50%) var(--shine-y, 50%);
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    opacity: 0;
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    right: -60%;
+    width: 220%;
+    height: 220%;
+    background: radial-gradient(circle at center, rgba(49, 130, 246, 0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  .card-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    padding: 28px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    transform: translateZ(40px);
+  }
+
+  .logo {
+    position: absolute;
+    top: 24px;
+    right: 26px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .logo-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: var(--blue);
+    position: relative;
+  }
+
+  .logo-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    background: #ffffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .name {
+    font-size: 23px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .grade {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray);
+  }
+
+  .major {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #4e5968;
+    margin: -6px 0 0;
+  }
+
+  .divider {
+    height: 1px;
+    background: #eef0f3;
+    margin: 2px 0;
+  }
+
+  .school-line {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .hint {
+    margin-top: 26px;
+    font-size: 12.5px;
+    color: rgba(25, 31, 40, 0.35);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="card" id="card">
+      <div class="card-inner">
+        <div class="logo">
+          <span class="logo-icon"></span>
+          <span class="logo-text">CNU</span>
+        </div>
+
+        <div class="name-row">
+          <span class="name">이현빈</span>
+          <span class="grade">1학년</span>
+        </div>
+        <p class="major">자율전공융합학부</p>
+
+        <div class="divider"></div>
+
+        <p class="school-line">충남대학교</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="hint">마우스를 명함 위에 올려보세요</p>
+
+  <script>
+    const card = document.getElementById('card');
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -10;
+      const rotateY = ((x - centerX) / centerX) * 12;
+
+      card.style.transform =
+        `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+
+      card.style.setProperty('--shine-x', `${(x / rect.width) * 100}%`);
+      card.style.setProperty('--shine-y', `${(y / rect.height) * 100}%`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+    });
+  </script>
+
+</body>
+</html>
